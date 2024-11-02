@@ -1,101 +1,101 @@
+"use client"
+
+import {  ChevronDown, Search } from "lucide-react";
 import Image from "next/image";
+import { useEffect, useState } from "react";
+import data from "@/data.json"
+
+interface Employee {
+  id: string;
+  name: string;
+  email: string;
+  status: string;
+  position: string;
+}
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [searchParam, setSearchParam] = useState('')
+  const [employees, setEmployees] = useState<Employee[]>([])
+  const [filter, setFilter] = useState<'all' | 'active' | 'inactive'>('all');
+  useEffect(()=>{
+    setEmployees(data.employees)
+  },[] )
+  const filteredEmployees = employees.filter((employee) => {
+    const isMatchingSearch = employee.name.toLowerCase().includes(searchParam);
+    const isActive = filter === 'active' ? employee.status === 'active' : true;
+    const isInactive = filter === 'inactive' ? employee.status === 'inactive' : true;
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    return isMatchingSearch && isActive && isInactive;
+  });
+ 
+  console.log(employees)
+  return (
+    <div className=" flex relative p-6 flex-col w-[100vw] h-[100vh] gap-6 text-gray-600 bg-gradient-to-r from-violet-200 to-pink-200">
+      {/* navbar */}
+      <div className="flex items-center w-full relative justify-between">
+        {/* search bar */}
+        <div className="px-3 py-1.5 h-10  bg-white flex gap-2 rounded-xl border-gray-400 border-2 ">
+          <Search  color="#a8a8a8" />
+          <input placeholder="search..." className="border-none outline-nonex focus:outline-none" type="text" onChange={(event)=>setSearchParam(event.target.value.toLowerCase())} />
+
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+        {/* user info */}
+        <div className="flex gap-3 py-.15 items-center justify-center">
+          {/* userImage */}
+          <div className="h-[52px] w-[52px] rounded-full overflow-hidden border-2 border-red-400">
+            <Image src={"/profile.jpg"} height={100} width={180} alt={""} />
+          </div>
+          {/* userInfo */}
+          <div className="text-xl items-center justify-center  flex gap-2 tracking-wide">
+            Tanishk Dhaka
+            <ChevronDown color="black" />
+          </div>
+        </div>
+      </div>
+
+      {/* Employee section */}
+      <div className="flex justify-between pr-5">
+        <h1 className="text-2xl font-extrabold">Employees</h1>
+        {/* filter */}
+        <div className="gap-8 flex text-xl">
+
+        <button onClick={() => setFilter('all')} className={`p-2 rounded-xl w-20  ${filter === 'all' ? 'bg-purple-500 text-black' :""}`}>All</button>
+          <button onClick={() => setFilter('active')} className={`p-2  rounded-xl w-20 ${filter === 'active' ? 'bg-purple-500 text-black' : ''}`}>Active</button>
+          <button onClick={() => setFilter('inactive')} className={`p-2 rounded-xl  ${filter === 'inactive' ? 'bg-purple-500 text-black' : ''}`}>Inactive</button>
+
+
+        </div>
+      </div>
+
+      {/* Employee cards */}
+      <div className="grid grid-cols-3 gap-10">
+          {
+           filteredEmployees.map((items,i)=>(
+              <div key={i} className="flex p-4 bg-[#E8F0F1] rounded-xl gap-3">
+              {/* Employee Image */}
+              <div className="h-[60px] w-[60px] rounded-full overflow-hidden border-2 border-red-400">
+            <Image src={"/profile.jpg"} height={100} width={180} alt={""} />
+          </div>
+              <div className="flex flex-col ">
+                {/* employeename */}
+                <h1 className="text-xl font-semibold">{items.name}</h1>
+
+                {/* employeeProfile */}
+                <h2 className="text-sm">{items.position}</h2>
+                {/* email */}
+                <h2 className="text-sm pt-6"> Email:-{'  '}{" "}{items.email}</h2>
+
+                {/* buttons */}
+
+                <div className="flex justify-evenly pt-6 tracking-widest">
+                  <button className="border-2  border-black p-2 rounded-lg">Block</button>
+                  <button className="bg-black text-white p-2 rounded-lg ">Details</button>
+                </div>
+              </div>
+            </div>
+            ))
+          }
+      </div>
     </div>
   );
 }

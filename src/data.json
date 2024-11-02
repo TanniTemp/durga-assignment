@@ -1,0 +1,46 @@
+{
+    "employees":[
+        {
+            "id":"1",
+            "name":"Johnson Wood",
+            "email":"johnson@example.com",
+            "status":"active",
+            "position":"Front End Development"
+        },
+        {
+            "id":"2",
+            "name":"John Doe",
+            "email":"john@example.com",
+            "status":"active",
+            "position":"Design Lead"
+        },
+        {
+            "id":"3",
+            "name":"Tanishk",
+            "email":"tanishk@example.com",
+            "status":"inactive",
+            "position":"UI/UX"
+        },
+        {
+            "id":"4",
+            "name":"Mayank Wood",
+            "email":"woods@example.com",
+            "status":"active",
+            "position":"Software Engineer"
+        },
+        {
+            "id":"5",
+            "name":"Batman",
+            "email":"batsy@example.com",
+            "status":"inactive",
+            "position":"Front End Development"
+        },
+        {
+            "id":"6",
+            "name":"Spiderman",
+            "email":"Spidey@example.com",
+            "status":"inactive",
+            "position":"Team Leader"
+        }
+    ]
+}
